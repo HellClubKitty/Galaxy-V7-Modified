@@ -1,0 +1,33 @@
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+#games
+static/books/
+.claude/
+src/routes/books/curate/+page.svelte
+src/routes/books/curate/+page.ts
+src/routes/books/curate/+server.ts
+src/routes/books/curate/sizes/+server.ts
+test.json
+curate-deleted.json

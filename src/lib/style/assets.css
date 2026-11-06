@@ -1,0 +1,78 @@
+/* Base reset shared by every route. Fonts are native system fonts: nothing to download. */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+html {
+	-webkit-text-size-adjust: 100%;
+	text-rendering: optimizeLegibility;
+}
+* {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+body {
+	margin: 0;
+	background-color: var(--color-bg);
+	color: var(--color-text);
+	font-family: var(--font-family-body);
+}
+button,
+input,
+select,
+textarea {
+	font: inherit;
+	color: inherit;
+}
+button {
+	cursor: pointer;
+}
+:focus-visible {
+	outline: 2px solid var(--color-pin);
+	outline-offset: 2px;
+}
+
+/* Thin, unobtrusive scrollbars */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-scrollbar-thumb) transparent;
+}
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+::-webkit-scrollbar-track {
+	background: var(--color-scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--color-scrollbar-thumb);
+	border-radius: 10px;
+	border: 2px solid transparent;
+	background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-scrollbar-thumb-hover);
+	background-clip: content-box;
+}
+
+.noSelect {
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+/* Zero-size text splitter used by <Cloak> */
+.filler {
+	position: absolute;
+	opacity: 0;
+	font-size: 0.1px;
+	pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+	}
+}

@@ -1,0 +1,85 @@
+/*
+ * Global design tokens. Themes (themes.css) override the colour tokens;
+ * everything else (type, radii, motion, elevation) lives here only.
+ *
+ * Visual language: GNOME/Fedora top panel + macOS floating dock and
+ * rounded, translucent chrome + Windows 11 centred controls and Mica-style layers.
+ */
+:root {
+	/* ---------- colour: surfaces ---------- */
+	--color-bg: #000;
+	--color-surface: #0c0c0c;
+	--color-surface-2: #151515;
+	--color-surface-3: #1e1e1e;
+	--color-chrome: #2c2c2c;
+	--color-window: #6e6e6e;
+	--color-white: #fff;
+	--color-black: #000;
+	--color-scrim: rgba(0, 0, 0, 0.12);
+	--color-scrim-medium: rgba(0, 0, 0, 0.5);
+	--color-scrim-strong: rgba(0, 0, 0, 0.85);
+	--color-glass: color-mix(in srgb, var(--color-chrome) 30%, #1010104c);
+
+	/* ---------- colour: text ---------- */
+	--color-text: #ededed;
+	--color-text-dark: #303030;
+	--color-text-muted: #a6a6a6;
+	--color-text-subtle: #6e6e6e;
+
+	/* ---------- colour: borders / overlays ---------- */
+	--color-border: rgba(255, 255, 255, 0.08);
+	--color-border-strong: rgba(255, 255, 255, 0.26);
+	--color-border-hover: #3a3a3a;
+	--overlay-hover: rgba(255, 255, 255, 0.06);
+	--overlay-hover-strong: rgba(255, 255, 255, 0.12);
+	--overlay-active: rgba(255, 255, 255, 0.4);
+	--overlay-indicator: rgba(255, 255, 255, 0.36);
+	--overlay-browser-tab: #343434;
+
+	/* ---------- colour: status / accent ---------- */
+	--color-danger: #e5534b;
+	--color-danger-hover: rgba(229, 83, 75, 0.7);
+	--color-pin: #7a7a7a; /* accent */
+
+	/* ---------- scrollbar ---------- */
+	--color-scrollbar-track: transparent;
+	--color-scrollbar-thumb: #3a3a3a;
+	--color-scrollbar-thumb-hover: #545454;
+
+	/* ---------- blur ---------- */
+	--blur-normal: 15px;
+	--blur-hard: 50px;
+	--blur-xhard: 90px;
+
+	/* ---------- type: native system stacks (SF / Segoe UI Variable / Cantarell) ---------- */
+	--font-family-body:
+		-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI Variable Text', 'Segoe UI',
+		Cantarell, 'Noto Sans', Roboto, 'Helvetica Neue', system-ui, sans-serif;
+	--font-family-heading:
+		-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI Variable Display', 'Segoe UI',
+		Cantarell, 'Noto Sans', Roboto, system-ui, sans-serif;
+	--font-family-display: var(--font-family-heading);
+	--font-family-title: var(--font-family-body);
+	--font-family-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Source Code Pro', monospace;
+
+	/* ---------- shape ---------- */
+	--radius-control: 8px;
+	--radius-card: 12px;
+	--radius-window: 12px;
+	--radius-pill: 999px;
+
+	/* ---------- elevation ---------- */
+	--shadow-popover: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 0 0.5px var(--color-border-strong);
+	--shadow-window: 0 8px 24px rgba(0, 0, 0, 0.28), 0 0 0 0.5px var(--color-border);
+	--shadow-window-active: 0 18px 50px rgba(0, 0, 0, 0.5), 0 0 0 0.5px var(--color-border-strong);
+
+	/* ---------- motion ---------- */
+	--ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+	--ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+	--dur-fast: 120ms;
+	--dur: 200ms;
+
+	font-family: var(--font-family-body);
+	color: var(--color-text);
+	color-scheme: dark;
+}

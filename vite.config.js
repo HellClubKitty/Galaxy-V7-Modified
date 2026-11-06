@@ -1,0 +1,40 @@
+import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vite';
+import sirv from 'sirv';
+import { epoxyPath } from '@mercuryworkshop/epoxy-transport';
+import { libcurlPath } from '@mercuryworkshop/libcurl-transport';
+import { baremuxPath } from '@mercuryworkshop/bare-mux/node';
+import { refluxPath } from '@nightnetwork/reflux';
+import { server as wisp, logging } from '@mercuryworkshop/wisp-js/server';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const lethePlugin = () => ({
+	name: 'lethe',
+	configureServer(server) {
+		server.middlewares.use((req, res, next) => {
+			next();
+		});
+		server.middlewares.use('/libbybutslightlyworse', sirv(epoxyPath, { dev: true }));
+		server.middlewares.use('/libby', sirv(libcurlPath, { dev: true }));
+		server.middlewares.use('/reflux', sirv(refluxPath, { dev: true }));
+		server.middlewares.use('/charon', sirv(baremuxPath, { dev: true }));
+		server.middlewares.use('/glass', sirv(join(__dirname, 'glass'), { dev: true }));
+		server.middlewares.use('/poly', sirv(join(__dirname, 'poly'), { dev: true }));
+		server.middlewares.use('/prism', sirv(join(__dirname, 'prism'), { dev: true }));
+
+		server.httpServer?.on('upgrade', (req, socket, head) => {
+			if (req.url.endsWith('/lively/')) wisp.routeRequest(req, socket, head);
+		});
+	}
+});
+
+export default defineConfig({
+	server: {
+		port: 5173,
+		watch: {
+			ignored: ['**/static/books/**']
+		}
+	},
+	plugins: [sveltekit(), lethePlugin()]
+});

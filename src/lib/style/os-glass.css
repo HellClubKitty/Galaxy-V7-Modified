@@ -1,0 +1,31 @@
+/*
+ * Shared "glass" material for the desktop shell. The page sets --glass-blur and --glass-a from the
+ * Look & feel settings; everything else is derived here so the dock, menu bar, panels, widgets and
+ * the Spotify HUD all share one material (and one slider).
+ */
+.desktop {
+	--glass-blur: 28px;
+	--glass-a: 0.16;
+
+	/* light glass: dock, menu bar */
+	--glass-light: linear-gradient(180deg, rgba(255, 255, 255, calc(var(--glass-a) + 0.09)), rgba(255, 255, 255, var(--glass-a)));
+	/* dark glass: panels, menus, widgets */
+	--glass-panel: linear-gradient(180deg, rgba(62, 62, 70, calc(var(--glass-a) + 0.5)), rgba(34, 34, 40, calc(var(--glass-a) + 0.46)));
+	--glass-filter: blur(var(--glass-blur)) saturate(1.9) brightness(1.05);
+
+	/* a bright hairline on every edge, a stronger one along the top, and a faint shade along the bottom */
+	--glass-edge:
+		inset 0 0 0 0.5px rgba(255, 255, 255, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.3),
+		inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+	--glass-drop: 0 18px 44px rgba(0, 0, 0, 0.36), 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.desktop .wallpaper-fx {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	/* vignette + a soft shade under the menu bar so white text stays readable on bright wallpapers */
+	background:
+		linear-gradient(180deg, rgba(0, 0, 0, 0.34), transparent 140px),
+		radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.38));
+}
