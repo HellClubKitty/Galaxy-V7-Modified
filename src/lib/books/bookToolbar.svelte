@@ -32,7 +32,87 @@
 	function toggleTag(t: string) {
 		selected = selected.includes(t) ? selected.filter((s) => s !== t) : selected.concat([t]);
 	}
+</script>
 
+<div class="search">
+	<img src={searchIcon} alt="" class="searchIcon" />
+	<input type="search" placeholder="Search books or tags" bind:value={search} autocomplete="off" />
+</div>
+
+<div class="filters">
+	<button
+		class="pill"
+		class:active={filter === 'all'}
+		aria-pressed={filter === 'all'}
+		onclick={() => (filter = 'all')}
+	>
+		All
+	</button>
+	<button
+		class="pill"
+		class:active={filter === 'favorites'}
+		aria-pressed={filter === 'favorites'}
+		onclick={() => (filter = 'favorites')}
+	>
+		Favorites
+	</button>
+	{#each shownTags as tag (tag)}
+		<button
+			class="pill"
+			class:active={selected.includes(tag)}
+			aria-pressed={selected.includes(tag)}
+			onclick={() => toggleTag(tag)}
+		>
+			{formatTag(tag)}
+		</button>
+	{/each}
+	{#if expanded || tags.length > shownTags.length}
+		<button class="pill subtle" aria-expanded={expanded} onclick={() => (expanded = !expanded)}>
+			{expanded ? 'Show less' : `More tags (${tags.length - shownTags.length})`}
+		</button>
+	{/if}
+	<div class="actions">
+		<button class="pill subtle" onclick={onrandom}>
+			<img src={shuffle} alt="" class="pillIcon" />
+			Random
+		</button>
+	</div>
+</div>
+
+<style>
+	.search {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		max-width: 420px;
+		margin: 28px 0 18px 24px;
+		padding: 12px 18px;
+		background: transparent;
+		border-bottom: 1px solid var(--color-border);
+		transition: border-color 0.2s;
+	}
+	.search:focus-within {
+		border-color: var(--color-border-strong);
+	}
+	.searchIcon {
+		flex-shrink: 0;
+		height: 16px;
+		width: auto;
+		filter: brightness(0.6);
+	}
+	.search input {
+		flex: 1;
+		min-width: 0;
+		background: transparent;
+		border: none;
+		outline: none;
+		color: var(--color-text);
+		font-family: var(--font-family-body);
+		font-size: 15px;
+	}
+	.search input::placeholder {
+		color: var(--color-text-muted);
+	}
 	.filters {
 		display: flex;
 		flex-wrap: wrap;

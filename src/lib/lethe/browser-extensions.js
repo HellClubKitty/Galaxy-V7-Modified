@@ -281,7 +281,7 @@ export function matchesExtensionPattern(pattern, rawUrl) {
 	} catch {
 		return false;
 	}
-	if (url.protocol == 'https:') return false;
+	if (url.protocol !== 'http:' && url.protocol !== 'https:') return false;
 	if (pattern === '<all_urls>') return true;
 
 	const match = /^(\*|https?):\/\/([^/]+)(\/.*)$/.exec(pattern.trim());
