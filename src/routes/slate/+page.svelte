@@ -44,7 +44,8 @@
 	let hydrated = $state(false);
 	let letheEngine = $state('sj2');
 	let ready = $state(false);
-	let polygon;
+	/** @type {{ encodeUrl(url: string): string, init(): Promise<void> } | null} */
+	let polygon = null;
 	let prismController;
 	let sjFrame;
 	let customWisp = $state('');
@@ -167,6 +168,7 @@
 				// @ts-ignore
 				encoded = window.__uv$config.prefix + window.__uv$config.encodeUrl(fixedUrl);
 			} else {
+				if (!polygon) throw new Error('Load the Scramjet bundle first.');
 				await initScramjet(polygon);
 				encoded = polygon.encodeUrl(fixedUrl);
 			}
@@ -240,6 +242,7 @@
 			// @ts-ignore
 			encoded = window.__uv$config.prefix + window.__uv$config.encodeUrl(url);
 		} else {
+			if (!polygon) throw new Error('Load the Scramjet bundle first.');
 			encoded = polygon.encodeUrl(url);
 		}
 		activeFrame.url = encoded;
@@ -344,7 +347,9 @@
 		if (document.fullscreenElement) {
 			document.exitFullscreen();
 		} else {
-			const iframes = document.querySelectorAll('.frameContainer iframe');
+			const iframes = /** @type {NodeListOf<HTMLIFrameElement>} */ (
+				document.querySelectorAll('.frameContainer iframe')
+			);
 			const activeIframe = Array.from(iframes).find((el) => el.offsetParent !== null);
 			if (activeIframe) {
 				activeIframe.requestFullscreen();

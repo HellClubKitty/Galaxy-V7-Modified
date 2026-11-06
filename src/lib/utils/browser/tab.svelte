@@ -59,7 +59,7 @@
 	});
 	// svelte-ignore non_reactive_update
 	let accumX = $state(0);
-	let tabLength = $state(null);
+	let tabLength = $state(/** @type {number | null} */ (null));
 	function callDrag(e) {
 		$activeTab = id;
 		// @ts-ignore

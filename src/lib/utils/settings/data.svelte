@@ -3,11 +3,13 @@
 	import uploadImg from '$lib/img/icons/upload.png';
 	import { downloadSnapshot, importOrigin, readManifest } from 'origin-snapshot';
 
+	/** @typedef {{ type: 'ok' | 'error', text: string }} StatusMessage */
+
 	let includeSession = $state(false);
 	let busy = $state(false);
-	let exportMsg = $state(null);
-	let importMsg = $state(null);
-	let pending = $state(null);
+	let exportMsg = $state(/** @type {StatusMessage | null} */ (null));
+	let importMsg = $state(/** @type {StatusMessage | null} */ (null));
+	let pending = $state(/** @type {{ file: File, manifest: Awaited<ReturnType<typeof readManifest>> } | null} */ (null));
 
 	function formatDate(iso) {
 		try {
@@ -25,7 +27,10 @@
 			await downloadSnapshot({ sessionStorage: includeSession });
 			exportMsg = { type: 'ok', text: 'Snapshot downloaded.' };
 		} catch (error) {
-			exportMsg = { type: 'error', text: 'Export failed: ' + (error?.message ?? error) };
+			exportMsg = {
+				type: 'error',
+				text: 'Export failed: ' + (error instanceof Error ? error.message : String(error))
+			};
 		} finally {
 			busy = false;
 		}
@@ -53,7 +58,10 @@
 			importMsg = { type: 'ok', text: 'Restored. Reload the page to see your data.' };
 			pending = null;
 		} catch (error) {
-			importMsg = { type: 'error', text: 'Import failed: ' + (error?.message ?? error) };
+			importMsg = {
+				type: 'error',
+				text: 'Import failed: ' + (error instanceof Error ? error.message : String(error))
+			};
 		} finally {
 			busy = false;
 		}

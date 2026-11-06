@@ -9,7 +9,7 @@
 	const vertical = $derived(pos !== 'bottom');
 	const size = $derived(prefs.dockSize);
 
-	let preview = $state(null); // { appId, x, y }
+	let preview = $state(/** @type {{ appId: string, x: number, y: number } | null} */ (null));
 	let bouncing = $state(null);
 	let shown = $state(true);
 	let hot = $state(false);

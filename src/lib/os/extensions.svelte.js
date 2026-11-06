@@ -6,6 +6,8 @@
 import { MAX_EXTENSION_BYTES, createHopiumExtensionApi, sandboxExtensionCode } from '$lib/lethe/browser-extensions.js';
 import { loadSetting, saveSetting, onSettingChange } from '$lib/utils/localspace.js';
 
+/** @typedef {{ id: string, name: string, description: string, code: string, contentScripts: { matches: string[], js: string, css: string }[] }} UserExtension */
+
 export const BUILTIN_EXT = [
 	{ id: 'focus-timer', name: 'Focus Timer', description: 'A 25-minute focus session in the menu bar. Click to start or pause.', builtin: true },
 	{ id: 'window-tiler', name: 'Window Tiler', description: 'Ctrl+Alt with the arrow keys snaps the front window: left, right, zoom, minimise.', builtin: true },
@@ -18,7 +20,7 @@ const DEFAULT_ON = { 'focus-timer': true, 'window-tiler': true, 'night-shade': f
 export const ext = $state({
 	enabled: { ...DEFAULT_ON },
 	/** Imported: { id, name, description, code } */
-	user: []
+	user: /** @type {UserExtension[]} */ ([])
 });
 
 /** Items extensions put in the menu bar. The Extensions host fills this in. */
@@ -68,6 +70,7 @@ export function parseExtension(text, filename = '') {
 	let name = filename.replace(/\.[^.]+$/, '') || 'Extension';
 	let description = '';
 	let code = raw;
+	/** @type {UserExtension['contentScripts']} */
 	let contentScripts = [];
 
 	if (raw.startsWith('{')) {

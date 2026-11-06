@@ -15,7 +15,7 @@
 			try {
 				msg = `Added “${importExtension(await file.text(), file.name).name}”.`;
 			} catch (err) {
-				msg = err.message;
+				msg = err instanceof Error ? err.message : String(err);
 			}
 		}
 		input.value = '';
@@ -26,7 +26,7 @@
 			paste = '';
 			pasteOpen = false;
 		} catch (err) {
-			msg = err.message;
+			msg = err instanceof Error ? err.message : String(err);
 		}
 	}
 	const sample = `// @name Hello

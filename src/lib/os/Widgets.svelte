@@ -70,7 +70,7 @@
 	}
 
 	/* ---------- system ---------- */
-	let battery = $state(null); // { level 0..1, charging }
+	let battery = $state(/** @type {{ level: number, charging: boolean } | null} */ (null));
 	let online = $state(true);
 	let sessionMin = $state(0);
 	const cores = typeof navigator !== 'undefined' ? navigator.hardwareConcurrency : null;
@@ -133,7 +133,7 @@
 				const w = importWidget(await file.text(), file.name);
 				toast(`Added “${w.name}”`);
 			} catch (err) {
-				toast(err.message);
+				toast(err instanceof Error ? err.message : String(err));
 			}
 		}
 		input.value = '';

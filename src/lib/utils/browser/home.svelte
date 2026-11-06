@@ -270,17 +270,6 @@
 		font-size: 11.5px;
 		color: var(--color-text-muted);
 	}
-	.shortcuts p {
-		margin: 0;
-		min-width: 0;
-		font-family: var(--font-family-body);
-		font-size: 13px;
-		font-weight: 500;
-		color: inherit;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
 	@media (max-width: 560px) {
 		.apps {
 			grid-template-columns: repeat(3, 1fr);

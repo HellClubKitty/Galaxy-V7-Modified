@@ -20,8 +20,9 @@ export function getOriginalUrl(url) {
 		return '';
 	}
 
-	if (typeof __uv$config !== 'undefined' && path.includes(__uv$config.prefix)) {
-		return __uv$config.decodeUrl(path.split(__uv$config.prefix)[1]);
+	const uvConfig = typeof window !== 'undefined' ? window.__uv$config : undefined;
+	if (uvConfig && path.includes(uvConfig.prefix)) {
+		return uvConfig.decodeUrl(path.split(uvConfig.prefix)[1]);
 	}
 
 	return '';

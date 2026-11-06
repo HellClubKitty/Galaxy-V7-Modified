@@ -11,7 +11,7 @@
 	/* ---------- move ---------- */
 	let drag = null;
 	function dragStart(e) {
-		if (e.button !== 0 || e.target.closest('button')) return;
+		if (e.button !== 0 || (e.target instanceof Element && e.target.closest('button'))) return;
 		focus(win.id);
 		e.currentTarget.setPointerCapture(e.pointerId);
 		drag = { px: e.clientX, py: e.clientY, x: win.x, y: win.y, moved: false };
@@ -125,7 +125,7 @@
 		onpointermove={dragMove}
 		onpointerup={dragEnd}
 		onpointercancel={dragEnd}
-		ondblclick={(e) => !e.target.closest('button') && toggleMaximize(win.id)}
+		ondblclick={(e) => !(e.target instanceof Element && e.target.closest('button')) && toggleMaximize(win.id)}
 		role="presentation"
 	>
 		<div class="lights" class:mono={prefs.trafficLights === 'mono'}>

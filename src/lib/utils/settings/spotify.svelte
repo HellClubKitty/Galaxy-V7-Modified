@@ -26,7 +26,7 @@
 		try {
 			await startAuth();
 		} catch (e) {
-			error = e.message;
+			error = e instanceof Error ? e.message : String(e);
 		}
 	}
 	async function copy() {

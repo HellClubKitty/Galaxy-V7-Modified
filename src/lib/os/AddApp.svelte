@@ -19,7 +19,7 @@
 	let wisp = $state('');
 	let notif = $state('');
 	let advanced = $state(false);
-	let error = $state(null);
+	let error = $state(/** @type {string | null} */ (null));
 
 	function submit(e) {
 		e.preventDefault();

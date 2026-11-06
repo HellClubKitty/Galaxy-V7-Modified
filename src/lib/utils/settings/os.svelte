@@ -6,8 +6,8 @@
 	const maxRecents = 3;
 	const maxSize = 15 * 1024 * 1024;
 
-	let recents = $state([]);
-	let uploadError = $state(null);
+	let recents = $state(/** @type {string[]} */ ([]));
+	let uploadError = $state(/** @type {string | null} */ (null));
 
 	onMount(async () => {
 		recents = await loadSetting('bgRecents', []);
@@ -48,7 +48,7 @@
 
 	const byName = (g) =>
 		Object.fromEntries(
-			Object.entries(g).map(([path, url]) => [path.split('/').pop().replace(/\.\w+$/, ''), url])
+			Object.entries(g).map(([path, url]) => [path.split('/').pop()?.replace(/\.\w+$/, '') ?? '', url])
 		);
 	const thumbs = byName(
 		import.meta.glob('$lib/img/bg-downsized/*', { eager: true, query: '?url', import: 'default' })

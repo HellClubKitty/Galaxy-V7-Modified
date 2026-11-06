@@ -5,6 +5,9 @@ import vm from 'node:vm';
 
 const workerSource = await readFile(new URL('../static/servy.js', import.meta.url), 'utf8');
 
+/**
+ * @param {{ savedConfig?: { prefix: string, files: { wasm: string } } | null, prismReadyAfterMs?: number }} [options]
+ */
 function createWorker({ savedConfig = null, prismReadyAfterMs = 0 } = {}) {
 	const listeners = new Map();
 	const state = { prismReady: false };
@@ -46,10 +49,17 @@ function createWorker({ savedConfig = null, prismReadyAfterMs = 0 } = {}) {
 	return listeners.get('fetch');
 }
 
+/**
+ * @param {(event: { request: { url: string }, respondWith: (response: Promise<Response> | Response) => void }) => void} handler
+ * @param {string} url
+ * @returns {Promise<Response>}
+ */
 function dispatchFetch(handler, url) {
+	/** @type {Promise<Response> | Response | undefined} */
 	let response;
 	handler({ request: { url }, respondWith(value) { response = value; } });
-	return response;
+	if (!response) throw new Error('The service worker did not handle the request.');
+	return Promise.resolve(response);
 }
 
 test('fresh install without Scramjet config passes ordinary requests through', async () => {

@@ -137,6 +137,7 @@ async function token() {
 	}
 }
 
+/** @param {string} path @param {string} [method] @param {Record<string, unknown> | null} [body] @param {boolean} [retry] */
 async function api(path, method = 'GET', body = null, retry = true) {
 	const t = await token();
 	if (!t) throw new Error('not signed in');
@@ -286,6 +287,7 @@ export async function seek(ms) {
 }
 
 /* ---------- extras for the HUD ---------- */
+/** @param {string} path @param {string} [method] @param {Record<string, unknown> | null} [body] */
 async function put(path, method = 'PUT', body = null) {
 	try {
 		const res = await api(path, method, body);

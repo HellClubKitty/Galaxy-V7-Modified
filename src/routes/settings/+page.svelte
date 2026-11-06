@@ -24,7 +24,7 @@
 
 	const wanted = browser ? new URLSearchParams(location.search).get('tab') : null;
 	let current = $state(sections.some((s) => s.id === wanted) ? wanted : sections[0].id);
-	const active = $derived(sections.find((s) => s.id === current));
+	const active = $derived(sections.find((s) => s.id === current) ?? sections[0]);
 </script>
 
 <svelte:head><title>Settings</title></svelte:head>

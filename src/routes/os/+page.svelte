@@ -27,6 +27,8 @@
 	import { initSpotify } from '$lib/os/spotify.svelte.js';
 	import '$lib/style/os-glass.css';
 
+	/** @typedef {import('$lib/os/apps.js').App} App */
+
 	const unlockedBefore = () => {
 		try {
 			return sessionStorage.getItem('galaxy:unlocked') === '1';
@@ -37,13 +39,13 @@
 
 	let host = $state('');
 	let bgURL = $state(mainBG);
-	let customApps = $state([]);
+	let customApps = $state(/** @type {App[]} */ ([]));
 	let locked = $state(prefs.lockScreen && !unlockedBefore());
 	let launchpadOpen = $state(false);
 	let spotlightOpen = $state(false);
 	let quickOpen = $state(false);
 	let addOpen = $state(false);
-	let menu = $state(null); // { x, y, app }
+	let menu = $state(/** @type {{ x: number, y: number, app: App | null } | null} */ (null));
 	let fullscreen = $state(false);
 	let spotifyOpen = $state(false);
 
@@ -384,14 +386,16 @@
 	{/if}
 
 	{#if menu}
-		<div class="menu" style:left="{menu.x}px" style:top="{menu.y}px" onpointerdown={(e) => e.stopPropagation()} role="menu" tabindex="-1">
-			{#if menu.app}
-				<button role="menuitem" onclick={() => (openNew(menu.app), (menu = null))}>New window</button>
-				{#if windowsOf(menu.app.id).length}
-					<button role="menuitem" onclick={() => (closeApp(menu.app.id), (menu = null))}>Close windows</button>
+		{@const contextMenu = menu}
+		<div class="menu" style:left="{contextMenu.x}px" style:top="{contextMenu.y}px" onpointerdown={(e) => e.stopPropagation()} role="menu" tabindex="-1">
+			{#if contextMenu.app}
+				{@const contextApp = contextMenu.app}
+				<button role="menuitem" onclick={() => (openNew(contextApp), (menu = null))}>New window</button>
+				{#if windowsOf(contextApp.id).length}
+					<button role="menuitem" onclick={() => (closeApp(contextApp.id), (menu = null))}>Close windows</button>
 				{/if}
-				{#if menu.app.id.startsWith('custom-')}
-					<button role="menuitem" class="danger" onclick={() => (removeApp(menu.app), (menu = null))}>Remove app</button>
+				{#if contextApp.id.startsWith('custom-')}
+					<button role="menuitem" class="danger" onclick={() => (removeApp(contextApp), (menu = null))}>Remove app</button>
 				{/if}
 			{:else}
 				<button role="menuitem" onclick={() => ((addOpen = true), (menu = null))}>Add app…</button>

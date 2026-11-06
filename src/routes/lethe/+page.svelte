@@ -12,7 +12,8 @@
 	let query = $state('');
 	let letheEngine = $state('prism');
 	let iframeEl;
-	let polygon;
+	/** @type {ReturnType<typeof createScramjetController> | null} */
+	let polygon = null;
 	let decodedURL = $state('');
 	let url = $state('');
 	let car = $state('libcurl');
@@ -88,8 +89,11 @@
 		}
 
 		if (letheEngine === 'uv') {
-			url = window.__uv$config.prefix + window.__uv$config.encodeUrl(fixedUrl);
+			const uvConfig = window.__uv$config;
+			if (!uvConfig) throw new Error('Load the UV engine first.');
+			url = uvConfig.prefix + uvConfig.encodeUrl(fixedUrl);
 		} else {
+			if (!polygon) throw new Error('Load the Scramjet bundle first.');
 			url = polygon.encodeUrl(fixedUrl);
 		}
 		decodedURL = getOriginalUrl(url);

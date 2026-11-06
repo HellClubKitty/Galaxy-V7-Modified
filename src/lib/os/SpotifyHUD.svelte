@@ -18,7 +18,7 @@
 	];
 
 	/* ---------- banner on track change ---------- */
-	let banner = $state(null);
+	let banner = $state(/** @type {({ key: number, leaving: boolean } & NonNullable<typeof sp.track>) | null} */ (null));
 	let bannerTimer;
 	let leaveTimer;
 	let seen = untrack(() => sp.changeSeq);
@@ -26,10 +26,11 @@
 		const seq = sp.changeSeq;
 		if (seq === seen) return;
 		seen = seq;
-		if (!prefs.spotifyHud || !prefs.spotifyBanner || !sp.track) return;
+		const track = sp.track;
+		if (!prefs.spotifyHud || !prefs.spotifyBanner || !track) return;
 		untrack(() => {
 			if (open) return;
-			banner = { ...sp.track, key: seq, leaving: false };
+			banner = { ...track, key: seq, leaving: false };
 			clearTimeout(bannerTimer);
 			clearTimeout(leaveTimer);
 			leaveTimer = setTimeout(() => banner && (banner.leaving = true), 3800);

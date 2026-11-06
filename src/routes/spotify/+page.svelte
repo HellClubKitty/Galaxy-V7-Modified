@@ -5,24 +5,24 @@
 	import '$lib/style/variables.css';
 	import { completeAuth } from '$lib/os/spotify.svelte.js';
 
-	let state = $state('working'); // working | done | error
+	let authStatus = $state('working'); // working | done | error
 	let message = $state('');
 
 	onMount(async () => {
 		const q = new URLSearchParams(location.search);
 		if (q.get('error')) {
-			state = 'error';
+			authStatus = 'error';
 			message = q.get('error') === 'access_denied' ? 'You chose not to connect Spotify.' : `Spotify said: ${q.get('error')}`;
 			return;
 		}
 		try {
 			await completeAuth(q.get('code'), q.get('state'));
-			state = 'done';
+			authStatus = 'done';
 			if (window.opener) setTimeout(() => window.close(), 900);
 			else setTimeout(() => location.replace('/os'), 900);
 		} catch (e) {
-			state = 'error';
-			message = e.message;
+			authStatus = 'error';
+			message = e instanceof Error ? e.message : String(e);
 		}
 	});
 </script>
@@ -31,10 +31,10 @@
 
 <main>
 	<div class="card">
-		{#if state === 'working'}
+		{#if authStatus === 'working'}
 			<span class="spin"></span>
 			<h1>Connecting to Spotify…</h1>
-		{:else if state === 'done'}
+		{:else if authStatus === 'done'}
 			<span class="ok"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" /></svg></span>
 			<h1>Spotify connected</h1>
 			<p>You can close this window.</p>

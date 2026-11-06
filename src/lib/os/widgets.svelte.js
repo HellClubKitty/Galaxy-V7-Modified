@@ -5,6 +5,8 @@
 // Widgets.svelte), so a widget can draw and run scripts but can't touch Hopium or the network.
 import { loadSetting, saveSetting, onSettingChange } from '$lib/utils/localspace.js';
 
+/** @typedef {{ id: string, name: string, w: number, h: number, html: string }} CustomWidget */
+
 export const BUILTIN = [
 	{ id: 'clock', name: 'Clock', w: 168, h: 168 },
 	{ id: 'calendar', name: 'Calendar', w: 232, h: 248 },
@@ -33,11 +35,14 @@ export const widgets = $state({
 	editing: false,
 	items: builtinItems(),
 	/** Imported widgets: { id, name, w, h, html } */
-	custom: []
+	custom: /** @type {CustomWidget[]} */ ([])
 });
 
 /** Built-in and imported widgets, in one list. */
-export const allWidgets = () => [...BUILTIN, ...widgets.custom.map((c) => ({ id: c.id, name: c.name, w: c.w, h: c.h, custom: true, html: c.html }))];
+export const allWidgets = () => [
+	...BUILTIN.map((widget) => ({ ...widget, custom: false, html: '' })),
+	...widgets.custom.map((widget) => ({ ...widget, custom: true }))
+];
 
 function apply(value) {
 	if (!value || typeof value !== 'object') return;

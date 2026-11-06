@@ -144,7 +144,7 @@
 	.item.on {
 		background: rgba(255, 255, 255, 0.16);
 	}
-	.logo svg,
+	.logo :global(svg),
 	.icon svg {
 		width: 15px;
 		height: 15px;

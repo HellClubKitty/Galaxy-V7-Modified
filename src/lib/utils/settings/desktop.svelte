@@ -21,7 +21,7 @@
 				const w = importWidget(await file.text(), file.name);
 				widgetMsg = `Added “${w.name}”.`;
 			} catch (err) {
-				widgetMsg = err.message;
+				widgetMsg = err instanceof Error ? err.message : String(err);
 			}
 		}
 		input.value = '';
@@ -33,7 +33,7 @@
 			paste = '';
 			pasteOpen = false;
 		} catch (err) {
-			widgetMsg = err.message;
+			widgetMsg = err instanceof Error ? err.message : String(err);
 		}
 	}
 

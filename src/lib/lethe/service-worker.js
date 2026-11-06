@@ -8,7 +8,8 @@ const scramjetInitPromises = new WeakMap();
 function waitFor(predicate, subscribe, description, timeout = STARTUP_TIMEOUT) {
 	if (predicate()) return Promise.resolve();
 
-	return new Promise((resolve, reject) => {
+	/** @type {Promise<void>} */
+	const waiting = new Promise((resolve, reject) => {
 		let finished = false;
 		const cleanup = () => {
 			if (finished) return;
@@ -33,6 +34,7 @@ function waitFor(predicate, subscribe, description, timeout = STARTUP_TIMEOUT) {
 		subscribe?.addEventListener?.('controllerchange', check);
 		check();
 	});
+	return waiting;
 }
 
 async function startServiceWorker() {
@@ -54,7 +56,8 @@ async function startServiceWorker() {
 			updateViaCache: 'none'
 		});
 	} catch (error) {
-		throw new Error(`Could not register ${SERVICE_WORKER_URL}: ${error?.message || error}`);
+		const message = error instanceof Error ? error.message : String(error);
+		throw new Error(`Could not register ${SERVICE_WORKER_URL}: ${message}`);
 	}
 
 	const activeWorker = () => registration.active;

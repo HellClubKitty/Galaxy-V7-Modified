@@ -3,10 +3,11 @@
 	import AppIcon from './AppIcon.svelte';
 
 	/* mode "launchpad": paged full-screen grid. mode "spotlight": small search bar. */
+	/** @type {{ apps: any[], mode?: string, onlaunch: (app: any) => void, onsearch: (query: string) => void, onadd?: () => void, onclose: () => void }} */
 	let { apps, mode = 'launchpad', onlaunch, onsearch, onadd, onclose } = $props();
 
 	let query = $state('');
-	let input;
+	let input = $state();
 	let sel = $state(0);
 	let page = $state(0);
 	let vw = $state(1280);
@@ -35,7 +36,7 @@
 		page = 0;
 	}
 	function pick(item) {
-		if (item.add) onadd();
+		if (item.add) onadd?.();
 		else onlaunch(item);
 	}
 	function submit() {

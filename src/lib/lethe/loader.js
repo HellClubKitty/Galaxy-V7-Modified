@@ -2,6 +2,7 @@ const pending = new Map();
 
 function inject(src, ordered) {
 	if (pending.has(src)) return pending.get(src);
+	/** @type {Promise<void>} */
 	const p = new Promise((resolve, reject) => {
 		const s = document.createElement('script');
 		s.src = src;
